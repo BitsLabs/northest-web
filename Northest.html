@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Northest — Creating Intelligent Companies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ---------- Tokens ---------- */
+  :root{
+    --bg:        #0a1226;
+    --bg-2:      #0e1736;
+    --ink:       #f4efe6;
+    --ink-soft:  #d6d2c8;
+    --ink-mute:  #9aa0b0;
+    --line:      rgba(244,239,230,0.12);
+    --line-2:    rgba(244,239,230,0.20);
+    --warm-1:    #b86a2e;   /* deep ember */
+    --warm-2:    #e89a55;   /* sun */
+    --warm-3:    #f9c98a;   /* highlight */
+    --chip-bg:   rgba(244,239,230,0.06);
+    --serif:     "Geist", system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    --sans:      "Geist", system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    --mono:      ui-monospace, SFMono-Regular, Menlo, monospace;
+    --container: 1240px;
+    --pad-x:     clamp(20px, 4vw, 48px);
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  a{ color:inherit; text-decoration:none; }
+  button{ font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: saturate(140%) blur(18px);
+    -webkit-backdrop-filter: saturate(140%) blur(18px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .nav-inner{
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 14px var(--pad-x);
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+  }
+  .brand{
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--ink); letter-spacing: 0.02em;
+  }
+  .brand-mark{
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .brand-mark img{
+    width: 26px; height: 26px; object-fit: contain; display: block;
+    filter: invert(1);
+  }
+  .brand-name{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .nav-links{
+    display: flex; align-items: center; gap: 28px;
+    justify-self: center;
+  }
+  .nav-links a{
+    font-size: 14px; color: var(--ink-soft);
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 2px;
+  }
+  .nav-links a:hover{ color: var(--ink); }
+  .caret{ width:10px; height:10px; opacity: 0.7; }
+
+  .nav-actions{
+    display: flex; align-items: center; gap: 10px;
+  }
+  .btn{
+    display: inline-flex; align-items: center; gap: 8px;
+    height: 36px; padding: 0 14px;
+    border-radius: 999px;
+    font-size: 14px; font-weight: 500;
+    border: 1px solid transparent;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 120ms ease;
+    white-space: nowrap;
+  }
+  .btn-ghost{ color: var(--ink-soft); }
+  .btn-ghost:hover{ color: var(--ink); }
+  .btn-line{ border-color: var(--line-2); color: var(--ink); }
+  .btn-line:hover{ border-color: var(--ink-soft); }
+  .btn-solid{ background: var(--ink); color: #14110c; }
+  .btn-solid:hover{ background: #fff; }
+
+  .menu-btn{
+    display: none;
+    width: 38px; height: 38px;
+    align-items: center; justify-content: center;
+    border-radius: 10px; border: 1px solid var(--line-2);
+  }
+  .menu-btn svg{ width: 18px; height: 18px; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+    padding: clamp(120px, 18vh, 180px) var(--pad-x) clamp(100px, 16vh, 160px);
+  }
+
+  /* Photo background */
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: url("assets/hero-comet.jpg");
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    z-index: -2;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      radial-gradient(60% 45% at 50% 48%, rgba(8,12,28,0.55), transparent 70%),
+      linear-gradient(180deg, rgba(8,12,28,0.35) 0%, rgba(8,12,28,0.0) 30%, rgba(8,12,28,0.0) 70%, rgba(8,12,28,0.45) 100%);
+    z-index: -1;
+    pointer-events:none;
+  }
+
+  /* Subtle grain */
+  .grain{
+    position:absolute; inset:0; z-index:-1; pointer-events:none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  .hero-inner{
+    max-width: 1040px;
+    width: 100%;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 28px;
+  }
+
+  .eyebrow{
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 6px 12px;
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    background: rgba(244,239,230,0.04);
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .eyebrow .dot{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--warm-3);
+    box-shadow: 0 0 10px var(--warm-2);
+  }
+
+  h1.headline{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(40px, 7vw, 92px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    margin: 0;
+    text-wrap: balance;
+    color: #fff;
+    text-shadow: 0 2px 30px rgba(0,0,0,0.35);
+  }
+  .headline em{
+    font-style: normal;
+    font-weight: 400;
+    background: linear-gradient(180deg, var(--warm-3), var(--warm-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .tagline{
+    font-size: 15px;
+    color: var(--ink-mute);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex; align-items: center; gap: 18px;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .tagline span{ display: inline-flex; align-items: center; gap: 8px; }
+  .tagline .sep{
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--ink-mute);
+  }
+
+  .cta-row{
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+  }
+  .btn-lg{
+    height: 46px; padding: 0 22px; font-size: 15px;
+  }
+
+  /* Card preview block */
+  .preview{
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    align-items: center;
+    gap: 16px;
+    max-width: 520px;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--line-2);
+    border-radius: 14px;
+    background: rgba(11,13,16,0.5);
+    backdrop-filter: blur(6px);
+    text-align: left;
+  }
+  .preview .thumb{
+    width: 64px; height: 64px;
+    border-radius: 10px;
+    background:
+      radial-gradient(60% 60% at 30% 30%, var(--warm-3), var(--warm-2) 55%, var(--warm-1) 100%);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.3);
+  }
+  .preview .thumb::after{
+    content:""; position:absolute; inset:0;
+    background: repeating-linear-gradient(135deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 8px);
+    mix-blend-mode: multiply;
+  }
+  .preview .meta{ display:flex; flex-direction:column; gap: 4px; }
+  .preview .kicker{
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .preview .title{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 15px; line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .preview .link{
+    margin-top: 4px;
+    font-size: 13px; color: var(--warm-3);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .preview .link svg{ width: 12px; height: 12px; }
+
+  /* Floating search */
+  .floating-search{
+    position: absolute;
+    left: 50%; transform: translateX(-50%);
+    bottom: clamp(16px, 4vh, 36px);
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: rgba(244,239,230,0.92);
+    color: #1a1812;
+    border-radius: 999px;
+    font-size: 13px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.5) inset;
+    max-width: calc(100vw - 32px);
+  }
+  .floating-search input{
+    border: 0; background: transparent; outline: none;
+    width: 240px; font: inherit; color: #1a1812;
+  }
+  .floating-search input::placeholder{ color: #6b6458; }
+  .floating-search .ask{
+    width: 26px; height: 26px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #1a1812; color: var(--ink);
+  }
+  .floating-search .ask svg{ width: 12px; height: 12px; }
+
+  /* ---------- Mobile drawer ---------- */
+  .drawer{
+    position: fixed; inset: 0;
+    background: rgba(11,13,16,0.96);
+    backdrop-filter: blur(8px);
+    z-index: 60;
+    display: none;
+    flex-direction: column;
+    padding: 18px var(--pad-x) 32px;
+  }
+  .drawer.open{ display: flex; }
+  .drawer-top{
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .drawer-links{
+    display: flex; flex-direction: column;
+    margin-top: 18px; gap: 4px;
+  }
+  .drawer-links a{
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .drawer-actions{
+    margin-top: 24px;
+    display: grid; gap: 10px;
+  }
+  .drawer-actions .btn{
+    height: 48px; justify-content: center;
+    font-size: 15px;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .nav-inner{ grid-template-columns: auto auto; }
+    .nav-links{ display: none; }
+    .nav-actions .btn:not(.btn-solid){ display: none; }
+    .menu-btn{ display: inline-flex; }
+  }
+  @media (max-width: 560px){
+    .nav-inner{ padding: 12px 18px; gap: 12px; }
+    .brand-name{ font-size: 17px; }
+    .nav-actions .btn-solid{ height: 36px; padding: 0 14px; font-size: 13px; }
+
+    .hero{
+      min-height: calc(100svh - 60px);
+      padding: 56px 18px 140px;
+    }
+    .hero-inner{ gap: 22px; }
+    h1.headline{
+      font-size: clamp(36px, 11vw, 56px);
+      line-height: 1.05;
+    }
+    .tagline{
+      gap: 10px; font-size: 11px; letter-spacing: 0.14em;
+    }
+    .tagline .sep{ display: none; }
+    .cta-row{ width: 100%; flex-direction: column; }
+    .cta-row .btn-lg{ width: 100%; justify-content: center; }
+    .preview{
+      grid-template-columns: 56px 1fr;
+      gap: 12px; padding: 12px;
+    }
+    .preview .thumb{ width: 56px; height: 56px; }
+    .floating-search{
+      width: calc(100% - 32px);
+      justify-content: space-between;
+    }
+    .floating-search input{ width: 100%; }
+  }
+
+  /* Reduce motion */
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" data-screen-label="Header">
+  <div class="nav-inner">
+    <a class="brand" href="#" aria-label="Northest home">
+      <span class="brand-mark">
+        <img src="assets/northest-logo.png" alt="" />
+      </span>
+      <span class="brand-name">Northest</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#">Product
+        <svg class="caret" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#">Platform
+        <svg class="caret" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#">Customers</a>
+      <a href="#">Resources
+        <svg class="caret" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#">Pricing</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost">Log in</a>
+      <a href="#" class="btn btn-ghost">Contact</a>
+      <a href="#" class="btn btn-line">Watch demo</a>
+      <a href="#" class="btn btn-solid">
+        Get started
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6h7M6 2.5L9.5 6 6 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile drawer -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-top">
+    <a class="brand" href="#">
+      <span class="brand-mark"><img src="assets/northest-logo.png" alt="" /></span>
+      <span class="brand-name">Northest</span>
+    </a>
+    <button class="menu-btn" id="closeBtn" aria-label="Close menu">
+      <svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <nav class="drawer-links" aria-label="Mobile">
+    <a href="#">Product <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#">Platform <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#">Customers <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#">Resources <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#">Pricing <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  </nav>
+  <div class="drawer-actions">
+    <a href="#" class="btn btn-line">Log in</a>
+    <a href="#" class="btn btn-line">Watch demo</a>
+    <a href="#" class="btn btn-solid">Get started →</a>
+  </div>
+</aside>
+
+<main class="hero" data-screen-label="Hero">
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="dot"></span> Northest · Intelligence platform</span>
+
+    <h1 class="headline">Creating <em>Intelligent</em> Companies.</h1>
+
+    <p class="tagline">
+      <span>Operate at scale</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>Reason in real time</span>
+      <span class="sep" aria-hidden="true"></span>
+      <span>Decide with confidence</span>
+    </p>
+
+    <div class="cta-row">
+      <a href="#" class="btn btn-lg btn-solid">
+        Start free trial
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#" class="btn btn-lg btn-line">Watch the tour</a>
+    </div>
+
+    <a class="preview" href="#">
+      <div class="thumb" aria-hidden="true"></div>
+      <div class="meta">
+        <span class="kicker">Field note · 2026</span>
+        <span class="title">How operators are turning judgment into infrastructure.</span>
+        <span class="link">Read the dispatch
+          <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 6h6M6 3l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+    </a>
+  </div>
+
+  </main>
+
+<script>
+  (function(){
+    var drawer = document.getElementById('drawer');
+    var openBtn = document.getElementById('menuBtn');
+    var closeBtn = document.getElementById('closeBtn');
+    function set(open){
+      drawer.classList.toggle('open', open);
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      openBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    openBtn && openBtn.addEventListener('click', function(){ set(true); });
+    closeBtn && closeBtn.addEventListener('click', function(){ set(false); });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') set(false);
+    });
+  })();
+</script>
+
+</body>
+</html>
