@@ -3,35 +3,40 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Northest — Creating Intelligent Companies</title>
+<title>Northest — AI Consultancy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 <style>
   /* ---------- Tokens ---------- */
   :root{
-    --bg:        #0a1226;
-    --bg-2:      #0e1736;
-    --ink:       #f4efe6;
-    --ink-soft:  #d6d2c8;
-    --ink-mute:  #9aa0b0;
-    --line:      rgba(244,239,230,0.12);
-    --line-2:    rgba(244,239,230,0.20);
-    --warm-1:    #b86a2e;   /* deep ember */
-    --warm-2:    #e89a55;   /* sun */
-    --warm-3:    #f9c98a;   /* highlight */
-    --chip-bg:   rgba(244,239,230,0.06);
-    --serif:     "Geist", system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
+    --bg:        #080d1c;
+    --bg-2:      #0c1128;
+    --ink:       #f0f2f8;
+    --ink-soft:  #c0c8dc;
+    --ink-mute:  #6b7599;
+    --line:      rgba(240,242,248,0.09);
+    --line-2:    rgba(240,242,248,0.16);
+    --accent-1:  #1d4ed8;
+    --accent-2:  #3b82f6;
+    --accent-3:  #93c5fd;
     --sans:      "Geist", system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
-    --mono:      ui-monospace, SFMono-Regular, Menlo, monospace;
     --container: 1240px;
     --pad-x:     clamp(20px, 4vw, 48px);
+    --nav-h:     60px;
   }
 
-  *,*::before,*::after{ box-sizing:border-box; }
-  html,body{ margin:0; padding:0; }
-  html{ -webkit-text-size-adjust:100%; }
+  *,*::before,*::after{ box-sizing: border-box; }
+
+  html{
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+
   body{
+    margin: 0; padding: 0;
+    min-height: 100%;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--sans);
@@ -41,29 +46,32 @@
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
-  a{ color:inherit; text-decoration:none; }
+
+  a{ color: inherit; text-decoration: none; }
   button{ font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 
   /* ---------- Nav ---------- */
   .nav{
     position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    background: rgba(255,255,255,0.04);
-    backdrop-filter: saturate(140%) blur(18px);
-    -webkit-backdrop-filter: saturate(140%) blur(18px);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    height: var(--nav-h);
+    background: rgba(8,13,28,0.75);
+    backdrop-filter: saturate(150%) blur(20px);
+    -webkit-backdrop-filter: saturate(150%) blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
   }
   .nav-inner{
     max-width: var(--container);
+    height: 100%;
     margin: 0 auto;
-    padding: 14px var(--pad-x);
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    padding: 0 var(--pad-x);
+    display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 32px;
   }
   .brand{
     display: inline-flex; align-items: center; gap: 10px;
-    color: var(--ink); letter-spacing: 0.02em;
+    color: var(--ink);
+    flex-shrink: 0;
   }
   .brand-mark{
     width: 28px; height: 28px;
@@ -74,66 +82,77 @@
     filter: invert(1);
   }
   .brand-name{
-    font-family: var(--sans);
     font-weight: 500;
     font-size: 18px;
     letter-spacing: -0.01em;
   }
 
   .nav-links{
-    display: flex; align-items: center; gap: 28px;
-    justify-self: center;
+    display: flex; align-items: center; gap: 2px;
+    flex: 1;
+    justify-content: center;
   }
   .nav-links a{
-    font-size: 14px; color: var(--ink-soft);
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 2px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    padding: 6px 12px;
+    border-radius: 7px;
+    transition: color 120ms, background 120ms;
   }
-  .nav-links a:hover{ color: var(--ink); }
-  .caret{ width:10px; height:10px; opacity: 0.7; }
+  .nav-links a:hover{ color: var(--ink); background: rgba(255,255,255,0.06); }
 
   .nav-actions{
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+    margin-left: auto;
   }
   .btn{
     display: inline-flex; align-items: center; gap: 8px;
-    height: 36px; padding: 0 14px;
-    border-radius: 999px;
+    height: 36px; padding: 0 16px;
+    border-radius: 7px;
     font-size: 14px; font-weight: 500;
     border: 1px solid transparent;
-    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, transform 120ms ease;
+    transition: background-color 120ms, border-color 120ms, color 120ms;
     white-space: nowrap;
   }
   .btn-ghost{ color: var(--ink-soft); }
-  .btn-ghost:hover{ color: var(--ink); }
+  .btn-ghost:hover{ color: var(--ink); background: rgba(255,255,255,0.06); }
   .btn-line{ border-color: var(--line-2); color: var(--ink); }
-  .btn-line:hover{ border-color: var(--ink-soft); }
-  .btn-solid{ background: var(--ink); color: #14110c; }
-  .btn-solid:hover{ background: #fff; }
+  .btn-line:hover{ border-color: rgba(255,255,255,0.32); }
+  .btn-solid{
+    background: var(--accent-2);
+    color: #fff;
+    border-color: var(--accent-2);
+  }
+  .btn-solid:hover{ background: #2563eb; border-color: #2563eb; }
 
   .menu-btn{
     display: none;
     width: 38px; height: 38px;
     align-items: center; justify-content: center;
-    border-radius: 10px; border: 1px solid var(--line-2);
+    border-radius: 8px;
+    border: 1px solid var(--line-2);
+    flex-shrink: 0;
   }
   .menu-btn svg{ width: 18px; height: 18px; }
+  .menu-btn:hover{ background: rgba(255,255,255,0.06); }
 
   /* ---------- Hero ---------- */
   .hero{
     position: relative;
-    min-height: 100svh;
-    display: grid;
-    place-items: center;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--nav-h);
     overflow: hidden;
     isolation: isolate;
-    padding: clamp(120px, 18vh, 180px) var(--pad-x) clamp(100px, 16vh, 160px);
   }
 
-  /* Photo background */
   .hero::before{
-    content:"";
-    position:absolute; inset:0;
+    content: "";
+    position: absolute; inset: 0;
     background-image: url("assets/hero-comet.jpg");
     background-size: cover;
     background-position: center 35%;
@@ -141,240 +160,231 @@
     z-index: -2;
   }
   .hero::after{
-    content:"";
-    position:absolute; inset:0;
+    content: "";
+    position: absolute; inset: 0;
     background:
-      radial-gradient(60% 45% at 50% 48%, rgba(8,12,28,0.55), transparent 70%),
-      linear-gradient(180deg, rgba(8,12,28,0.35) 0%, rgba(8,12,28,0.0) 30%, rgba(8,12,28,0.0) 70%, rgba(8,12,28,0.45) 100%);
+      radial-gradient(65% 55% at 50% 52%, rgba(8,13,28,0.5) 0%, transparent 100%),
+      linear-gradient(180deg,
+        rgba(8,13,28,0.55) 0%,
+        rgba(8,13,28,0.08) 35%,
+        rgba(8,13,28,0.08) 65%,
+        rgba(8,13,28,0.65) 100%);
     z-index: -1;
-    pointer-events:none;
-  }
-
-  /* Subtle grain */
-  .grain{
-    position:absolute; inset:0; z-index:-1; pointer-events:none;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-    mix-blend-mode: overlay;
+    pointer-events: none;
   }
 
   .hero-inner{
-    max-width: 1040px;
+    max-width: 900px;
     width: 100%;
+    padding: 0 var(--pad-x);
     text-align: center;
-    display: flex; flex-direction: column; align-items: center;
-    gap: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
   }
 
   .eyebrow{
     display: inline-flex; align-items: center; gap: 10px;
-    padding: 6px 12px;
+    padding: 5px 14px;
     border: 1px solid var(--line-2);
-    border-radius: 999px;
-    background: rgba(244,239,230,0.04);
-    font-size: 12px;
-    color: var(--ink-soft);
-    letter-spacing: 0.08em;
+    border-radius: 6px;
+    background: rgba(240,242,248,0.04);
+    font-size: 11px;
+    color: var(--ink-mute);
+    letter-spacing: 0.10em;
     text-transform: uppercase;
   }
   .eyebrow .dot{
     width: 6px; height: 6px; border-radius: 50%;
-    background: var(--warm-3);
-    box-shadow: 0 0 10px var(--warm-2);
+    background: var(--accent-2);
+    box-shadow: 0 0 8px var(--accent-2);
+    flex-shrink: 0;
   }
 
   h1.headline{
-    font-family: var(--sans);
     font-weight: 500;
-    font-size: clamp(40px, 7vw, 92px);
-    line-height: 1.02;
+    font-size: clamp(38px, 6.5vw, 88px);
+    line-height: 1.03;
     letter-spacing: -0.035em;
     margin: 0;
     text-wrap: balance;
     color: #fff;
-    text-shadow: 0 2px 30px rgba(0,0,0,0.35);
+    text-shadow: 0 2px 32px rgba(0,0,0,0.3);
   }
   .headline em{
     font-style: normal;
     font-weight: 400;
-    background: linear-gradient(180deg, var(--warm-3), var(--warm-2));
+    background: linear-gradient(135deg, #fff 0%, var(--accent-3) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
 
   .tagline{
-    font-size: 15px;
+    font-size: 12px;
     color: var(--ink-mute);
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    display: flex; align-items: center; gap: 18px;
+    display: flex; align-items: center; gap: 16px;
     flex-wrap: wrap; justify-content: center;
   }
-  .tagline span{ display: inline-flex; align-items: center; gap: 8px; }
   .tagline .sep{
-    width: 4px; height: 4px; border-radius: 50%;
+    width: 3px; height: 3px; border-radius: 50%;
     background: var(--ink-mute);
+    flex-shrink: 0;
   }
 
   .cta-row{
-    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    display: flex; gap: 10px;
+    flex-wrap: wrap; justify-content: center;
   }
   .btn-lg{
-    height: 46px; padding: 0 22px; font-size: 15px;
+    height: 46px; padding: 0 24px; font-size: 15px; border-radius: 8px;
   }
 
-  /* Card preview block */
+  /* Preview card */
   .preview{
-    margin-top: 36px;
+    margin-top: 8px;
     display: grid;
-    grid-template-columns: 64px 1fr;
+    grid-template-columns: 58px 1fr;
     align-items: center;
-    gap: 16px;
-    max-width: 520px;
+    gap: 14px;
+    max-width: 480px;
     width: 100%;
-    padding: 14px;
+    padding: 14px 16px;
     border: 1px solid var(--line-2);
-    border-radius: 14px;
-    background: rgba(11,13,16,0.5);
-    backdrop-filter: blur(6px);
-    text-align: left;
-  }
-  .preview .thumb{
-    width: 64px; height: 64px;
     border-radius: 10px;
-    background:
-      radial-gradient(60% 60% at 30% 30%, var(--warm-3), var(--warm-2) 55%, var(--warm-1) 100%);
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(0,0,0,0.3);
+    background: rgba(8,13,28,0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-align: left;
+    transition: border-color 150ms;
   }
-  .preview .thumb::after{
-    content:""; position:absolute; inset:0;
-    background: repeating-linear-gradient(135deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 8px);
-    mix-blend-mode: multiply;
+  .preview:hover{ border-color: rgba(255,255,255,0.26); }
+  .preview .thumb{
+    width: 58px; height: 58px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1e3a8a 0%, var(--accent-2) 100%);
+    border: 1px solid rgba(59,130,246,0.3);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
-  .preview .meta{ display:flex; flex-direction:column; gap: 4px; }
+  .preview .thumb svg{
+    width: 24px; height: 24px;
+    color: rgba(255,255,255,0.85);
+  }
+  .preview .meta{ display: flex; flex-direction: column; gap: 3px; min-width: 0; }
   .preview .kicker{
-    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
     color: var(--ink-mute);
   }
   .preview .title{
-    font-family: var(--sans);
     font-weight: 500;
-    font-size: 15px; line-height: 1.35;
+    font-size: 13px; line-height: 1.4;
     letter-spacing: -0.01em;
     color: var(--ink);
   }
   .preview .link{
-    margin-top: 4px;
-    font-size: 13px; color: var(--warm-3);
-    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 3px;
+    font-size: 12px; color: var(--accent-3);
+    display: inline-flex; align-items: center; gap: 5px;
   }
-  .preview .link svg{ width: 12px; height: 12px; }
-
-  /* Floating search */
-  .floating-search{
-    position: absolute;
-    left: 50%; transform: translateX(-50%);
-    bottom: clamp(16px, 4vh, 36px);
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 10px 14px;
-    background: rgba(244,239,230,0.92);
-    color: #1a1812;
-    border-radius: 999px;
-    font-size: 13px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.5) inset;
-    max-width: calc(100vw - 32px);
-  }
-  .floating-search input{
-    border: 0; background: transparent; outline: none;
-    width: 240px; font: inherit; color: #1a1812;
-  }
-  .floating-search input::placeholder{ color: #6b6458; }
-  .floating-search .ask{
-    width: 26px; height: 26px; border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    background: #1a1812; color: var(--ink);
-  }
-  .floating-search .ask svg{ width: 12px; height: 12px; }
+  .preview .link svg{ width: 11px; height: 11px; flex-shrink: 0; }
 
   /* ---------- Mobile drawer ---------- */
   .drawer{
     position: fixed; inset: 0;
-    background: rgba(11,13,16,0.96);
-    backdrop-filter: blur(8px);
-    z-index: 60;
+    background: rgba(8,13,28,0.98);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 100;
     display: none;
     flex-direction: column;
-    padding: 18px var(--pad-x) 32px;
   }
   .drawer.open{ display: flex; }
+
   .drawer-top{
-    display: flex; justify-content: space-between; align-items: center;
-    padding-bottom: 14px;
+    height: var(--nav-h);
+    padding: 0 var(--pad-x);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
   }
+
   .drawer-links{
     display: flex; flex-direction: column;
-    margin-top: 18px; gap: 4px;
+    padding: 8px var(--pad-x) 0;
+    flex: 1;
+    overflow-y: auto;
   }
   .drawer-links a{
-    font-family: var(--sans);
     font-weight: 500;
-    font-size: 26px;
+    font-size: 24px;
     letter-spacing: -0.02em;
-    color: var(--ink);
-    padding: 14px 0;
+    color: var(--ink-soft);
+    padding: 18px 0;
     border-bottom: 1px solid var(--line);
-    display: flex; justify-content: space-between; align-items: center;
+    display: block;
+    transition: color 120ms;
   }
+  .drawer-links a:last-child{ border-bottom: none; }
+  .drawer-links a:hover{ color: var(--ink); }
+
   .drawer-actions{
-    margin-top: 24px;
-    display: grid; gap: 10px;
+    padding: 20px var(--pad-x) max(24px, env(safe-area-inset-bottom));
+    display: grid; gap: 8px;
+    border-top: 1px solid var(--line);
   }
   .drawer-actions .btn{
     height: 48px; justify-content: center;
-    font-size: 15px;
+    font-size: 15px; border-radius: 8px;
   }
 
   /* ---------- Responsive ---------- */
   @media (max-width: 900px){
-    .nav-inner{ grid-template-columns: auto auto; }
     .nav-links{ display: none; }
-    .nav-actions .btn:not(.btn-solid){ display: none; }
+    .nav-actions .btn-ghost{ display: none; }
     .menu-btn{ display: inline-flex; }
   }
-  @media (max-width: 560px){
-    .nav-inner{ padding: 12px 18px; gap: 12px; }
-    .brand-name{ font-size: 17px; }
-    .nav-actions .btn-solid{ height: 36px; padding: 0 14px; font-size: 13px; }
 
-    .hero{
-      min-height: calc(100svh - 60px);
-      padding: 56px 18px 140px;
+  @media (max-width: 640px){
+    html, body{
+      height: 100svh;
+      overflow: hidden;
     }
-    .hero-inner{ gap: 22px; }
+    .hero{
+      height: 100svh;
+    }
+    .hero-inner{
+      gap: 18px;
+      padding: 0 20px;
+    }
     h1.headline{
-      font-size: clamp(36px, 11vw, 56px);
+      font-size: clamp(34px, 10.5vw, 52px);
       line-height: 1.05;
     }
     .tagline{
-      gap: 10px; font-size: 11px; letter-spacing: 0.14em;
+      font-size: 10px;
+      gap: 10px;
+      letter-spacing: 0.14em;
     }
+    .cta-row{
+      width: 100%;
+      flex-direction: column;
+    }
+    .cta-row .btn-lg{
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px){
+    .preview{ display: none; }
+    .hero-inner{ gap: 16px; }
     .tagline .sep{ display: none; }
-    .cta-row{ width: 100%; flex-direction: column; }
-    .cta-row .btn-lg{ width: 100%; justify-content: center; }
-    .preview{
-      grid-template-columns: 56px 1fr;
-      gap: 12px; padding: 12px;
-    }
-    .preview .thumb{ width: 56px; height: 56px; }
-    .floating-search{
-      width: calc(100% - 32px);
-      justify-content: space-between;
-    }
-    .floating-search input{ width: 100%; }
   }
 
   /* Reduce motion */
@@ -385,7 +395,7 @@
 </head>
 <body>
 
-<header class="nav" data-screen-label="Header">
+<header class="nav">
   <div class="nav-inner">
     <a class="brand" href="#" aria-label="Northest home">
       <span class="brand-mark">
@@ -395,25 +405,16 @@
     </a>
 
     <nav class="nav-links" aria-label="Primary">
-      <a href="#">Product
-        <svg class="caret" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#">Platform
-        <svg class="caret" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#">Customers</a>
-      <a href="#">Resources
-        <svg class="caret" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <a href="#">Pricing</a>
+      <a href="#">Services</a>
+      <a href="#">Approach</a>
+      <a href="#">Case Studies</a>
+      <a href="#">Insights</a>
     </nav>
 
     <div class="nav-actions">
       <a href="#" class="btn btn-ghost">Log in</a>
-      <a href="#" class="btn btn-ghost">Contact</a>
-      <a href="#" class="btn btn-line">Watch demo</a>
       <a href="#" class="btn btn-solid">
-        Get started
+        Contact
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2.5 6h7M6 2.5L9.5 6 6 9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
@@ -435,56 +436,54 @@
     </button>
   </div>
   <nav class="drawer-links" aria-label="Mobile">
-    <a href="#">Product <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <a href="#">Platform <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <a href="#">Customers <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <a href="#">Resources <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <a href="#">Pricing <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a href="#">Services</a>
+    <a href="#">Approach</a>
+    <a href="#">Case Studies</a>
+    <a href="#">Insights</a>
+    <a href="#">Contact</a>
   </nav>
   <div class="drawer-actions">
     <a href="#" class="btn btn-line">Log in</a>
-    <a href="#" class="btn btn-line">Watch demo</a>
-    <a href="#" class="btn btn-solid">Get started →</a>
+    <a href="#" class="btn btn-solid">Book a Discovery Call</a>
   </div>
 </aside>
 
-<main class="hero" data-screen-label="Hero">
-  <div class="grain" aria-hidden="true"></div>
-
+<main class="hero">
   <div class="hero-inner">
-    <span class="eyebrow"><span class="dot"></span> Northest · Intelligence platform</span>
+    <span class="eyebrow"><span class="dot"></span> AI Consultancy</span>
 
-    <h1 class="headline">Creating <em>Intelligent</em> Companies.</h1>
+    <h1 class="headline">We Build <em>AI Systems</em><br>That Scale.</h1>
 
     <p class="tagline">
-      <span>Operate at scale</span>
+      <span>Strategy</span>
       <span class="sep" aria-hidden="true"></span>
-      <span>Reason in real time</span>
+      <span>Engineering</span>
       <span class="sep" aria-hidden="true"></span>
-      <span>Decide with confidence</span>
+      <span>Transformation</span>
     </p>
 
     <div class="cta-row">
       <a href="#" class="btn btn-lg btn-solid">
-        Start free trial
+        Book a Discovery Call
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#" class="btn btn-lg btn-line">Watch the tour</a>
+      <a href="#" class="btn btn-lg btn-line">View Our Work</a>
     </div>
 
     <a class="preview" href="#">
-      <div class="thumb" aria-hidden="true"></div>
+      <div class="thumb" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
       <div class="meta">
-        <span class="kicker">Field note · 2026</span>
-        <span class="title">How operators are turning judgment into infrastructure.</span>
-        <span class="link">Read the dispatch
+        <span class="kicker">Case Study · 2025</span>
+        <span class="title">How a mid-market firm cut decision time by 70% with custom AI agents.</span>
+        <span class="link">Read the case study
           <svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 6h6M6 3l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
       </div>
     </a>
   </div>
-
-  </main>
+</main>
 
 <script>
   (function(){
@@ -495,7 +494,6 @@
       drawer.classList.toggle('open', open);
       drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
       openBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      document.body.style.overflow = open ? 'hidden' : '';
     }
     openBtn && openBtn.addEventListener('click', function(){ set(true); });
     closeBtn && closeBtn.addEventListener('click', function(){ set(false); });
