@@ -35,10 +35,20 @@
     overflow: hidden;
     -webkit-text-size-adjust: 100%;
     background-color: #000000;
+    position: relative;
+  }
+
+  html::before{
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     background-image: url("assets/three.jpg");
     background-size: cover;
     background-position: center 35%;
     background-repeat: no-repeat;
+    filter: blur(6px);
+    transform: scale(1.06);
   }
 
   body{
